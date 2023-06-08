@@ -1,23 +1,43 @@
-const Sequelize = require("sequelize");
 const User = require("./user");
 const Pantry = require("./pantry");
 const SavedRecipe = require("./savedRecipe");
+const Comment = require("./comment");
 
-// SavedRecipe.belongsTo(User, {
-// 	foreignKey: "id",
-// 	// or user_id
-// });
+User.hasMany(SavedRecipe, {
+  foreignKey: "userId",
+});
 
-// SavedRecipe.hasMany(Pantry, {
-// 	foreignKey: "id",
-// });
+SavedRecipe.belongsTo(User, {
+  foreignKey: "userId",
+});
 
-SavedRecipe.belongsTo(User);
+User.hasMany(Pantry, {
+  foreignKey: "userId",
+});
 
-User.hasMany(SavedRecipe);
+Pantry.belongsTo(User, {
+  foreignKey: "userId",
+});
+
+User.hasMany(Comment, {
+  foreignKey: "userId",
+});
+
+Comment.belongsTo(User, { foreignKey: "userId" });
+
+SavedRecipe.hasMany(Comment, {
+  as: "recipeComments",
+  foreignKey: "recipeId",
+});
+
+Comment.belongsTo(SavedRecipe, {
+  as: "recipe",
+  foreignKey: "recipeId",
+});
 
 module.exports = {
-	User,
-	Pantry,
-	SavedRecipe,
+  User,
+  Pantry,
+  SavedRecipe,
+  Comment,
 };
