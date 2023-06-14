@@ -1,12 +1,12 @@
-import { Disclosure } from "@headlessui/react";
-import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline";
-import { motion as m, AnimatePresence } from "framer-motion";
+import { Disclosure } from "@headlessui/react"
+import { MinusSmallIcon, PlusSmallIcon } from "@heroicons/react/24/outline"
+import { motion as m, AnimatePresence } from "framer-motion"
 
 export default function Faq() {
   return (
     <div className='bg-gray-900 h-full pb-24 md:pb-0'>
       <AnimatePresence>
-        <div className='mx-auto max-w-7xl px-6 pt-12 sm:py-24 lg:px-8 md:pb-48'>
+        <div className='mx-auto max-w-7xl px-6 pt-12 sm:py-12 md:px-8 md:pb-48'>
           <div className='divide-y divide-white/10'>
             <h2 className='text-2xl font-bold leading-10 tracking-tight text-white'>
               Frequently asked questions
@@ -24,7 +24,7 @@ export default function Faq() {
                         variants={cardVariantsVertical}
                         custom={index}
                         className=''>
-                        <dt className='hover:bg-gray-800 p-2 rounded-md'>
+                        <dt className='hover:bg-gray-800 transition ease-out p-2 rounded-md'>
                           <Disclosure.Button className='flex w-full items-start justify-between text-left text-white'>
                             <span className='text-base font-semibold leading-7'>
                               {faq.question}
@@ -48,7 +48,7 @@ export default function Faq() {
                       <Disclosure.Panel as='dd' className='mt-2 pr-12'>
                         {faq.question ===
                         "What other features will be added in the future?" ? (
-                          <ul className='list-disc pl-5'>
+                          <ul className='list-disc pl-5 text-gray-300'>
                             <li>Daily meal plans.</li>
                             <li>Weekly meal plans.</li>
                             <li>Monthly meal plans.</li>
@@ -81,7 +81,7 @@ export default function Faq() {
         </div>
       </AnimatePresence>
     </div>
-  );
+  )
 }
 
 const faqs = [
@@ -132,7 +132,7 @@ const faqs = [
     answer:
       "You can send an email to info@imhungry.com! We will gladly accept your feedback.",
   },
-];
+]
 
 const cardVariantsVertical = {
   hidden: {
@@ -148,4 +148,4 @@ const cardVariantsVertical = {
       duration: 0.8,
     },
   },
-};
+}

@@ -1,7 +1,7 @@
-import Image from "next/image";
-import { motion as m, AnimatePresence } from "framer-motion";
-import pantry from "../../public/images/pantry.png";
-import kitchen from "../../public/images/kitchen.png";
+import Image from "next/image"
+import { motion as m, AnimatePresence, useAnimation } from "framer-motion"
+import pantry from "../../public/images/pantry.png"
+import kitchen from "../../public/images/kitchen.png"
 import {
   ArrowPathIcon,
   BanknotesIcon,
@@ -9,14 +9,17 @@ import {
   CursorArrowRaysIcon,
   GlobeAmericasIcon,
   CloudArrowUpIcon,
-} from "@heroicons/react/20/solid";
+} from "@heroicons/react/20/solid"
 import {
   BoltIcon,
   CalendarDaysIcon,
   UsersIcon,
-} from "@heroicons/react/24/outline";
+} from "@heroicons/react/24/outline"
 
 export default function LandingPage() {
+  const mainControls = useAnimation()
+  const featuresControls = useAnimation()
+  const secondaryFeaturesControls = useAnimation()
   return (
     <div className='bg-gray-800 h-full'>
       <AnimatePresence>
@@ -117,13 +120,14 @@ export default function LandingPage() {
 
           {/* Feature section */}
 
-          <m.div
-            initial='offscreen'
-            whileInView='onscreen'
-            viewport={{ once: true, amount: 0.8 }}
-            className='mx-auto max-w-7xl px-6 mb-24 md:mb-0 sm:mt-12 lg:px-8'>
+          <m.div className='mx-auto max-w-7xl px-6 mb-24 md:mb-0 mt-24 sm:mt-12 lg:px-8' >
             <m.div
-              variants={cardVariantsChildren}
+              initial={{ opacity: 0, y: 150 }}
+              animate={mainControls}
+              onViewportEnter={() => {
+                mainControls.start({ opacity: 1, y: 0 })
+              }}
+              transition={{ type: "spring", bounce: 0.4, duration: 0.8 }}
               className='mx-auto max-w-2xl text-center'>
               <h2 className='text-base font-semibold leading-7 text-orange-400'>
                 Effortless planning
@@ -140,7 +144,12 @@ export default function LandingPage() {
               <dl className='grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3'>
                 {primaryFeatures.map((feature) => (
                   <m.div
-                    variants={cardVariantsChildren}
+                    initial={{ opacity: 0, y: 150 }}
+                    animate={featuresControls}
+                    onViewportEnter={() => {
+                      featuresControls.start({ opacity: 1, y: 0 })
+                    }}
+                    transition={{ type: "spring", bounce: 0.4, duration: 0.8 }}
                     key={feature.name}
                     className='flex flex-col'>
                     <dt className='text-base font-semibold leading-7 text-white'>
@@ -169,7 +178,7 @@ export default function LandingPage() {
           </m.div>
 
           {/* Feature section */}
-          <div className='mt-56 sm:mt-36'>
+          <div className='mt-36'>
             <div className='mx-auto max-w-7xl px-6 lg:px-8'>
               <div className='mx-auto max-w-2xl sm:text-center'>
                 <h2 className='text-base font-semibold leading-7 text-orange-400'>
@@ -200,8 +209,16 @@ export default function LandingPage() {
             </div>
             <div className='mx-auto mt-16 max-w-7xl px-6 sm:mt-20 md:mt-24 lg:px-8'>
               <dl className='mx-auto grid max-w-2xl grid-cols-1 gap-x-6 gap-y-10 text-base leading-7 text-gray-300 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 lg:gap-x-8 lg:gap-y-16'>
-                {secondaryFeatures.map((feature) => (
-                  <div key={feature.name} className='relative pl-9'>
+                {secondaryFeatures.map((feature, index) => (
+                  <m.div
+                    key={feature.name}
+                    className='relative pl-9'
+                    initial={{ opacity: 0 }}
+                    animate={secondaryFeaturesControls}
+                    onViewportEnter={() => {
+                      secondaryFeaturesControls.start({ opacity: 1})
+                    }}
+                    transition={{ duration: 1, delay: index * 0.6 }}>
                     <dt className='inline font-semibold text-white'>
                       <feature.icon
                         className='absolute left-1 top-1 h-5 w-5 text-orange-500'
@@ -210,7 +227,7 @@ export default function LandingPage() {
                       {feature.name}
                     </dt>{" "}
                     <dd className='inline'>{feature.description}</dd>
-                  </div>
+                  </m.div>
                 ))}
               </dl>
             </div>
@@ -311,7 +328,7 @@ export default function LandingPage() {
         </main>
       </AnimatePresence>
     </div>
-  );
+  )
 }
 
 const primaryFeatures = [
@@ -336,7 +353,8 @@ const primaryFeatures = [
     href: "/signup",
     icon: CalendarDaysIcon,
   },
-];
+]
+
 const secondaryFeatures = [
   {
     name: "Save money",
@@ -372,13 +390,14 @@ const secondaryFeatures = [
       "Never lose your favorite recipes ever again by saving them in the cloud.",
     icon: CloudArrowUpIcon,
   },
-];
+]
+
 const stats = [
   { id: 1, name: "Different food recipes", value: "8,000+" },
   { id: 2, name: "Unlimited requests", value: "900m+" },
   { id: 3, name: "Uptime guarantee", value: "99.9%" },
   { id: 4, name: "Happy customers", value: "100%" },
-];
+]
 
 const cardVariantsVertical = {
   hidden: {
@@ -394,7 +413,7 @@ const cardVariantsVertical = {
       duration: 0.8,
     },
   },
-};
+}
 
 const cardVariantsHorizontal = {
   hidden: {
@@ -410,7 +429,7 @@ const cardVariantsHorizontal = {
       duration: 0.8,
     },
   },
-};
+}
 
 const cardVariantsChildren = {
   offscreen: {
@@ -425,4 +444,4 @@ const cardVariantsChildren = {
       duration: 0.8,
     },
   },
-};
+}

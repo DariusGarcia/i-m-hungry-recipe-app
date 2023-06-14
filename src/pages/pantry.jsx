@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react";
-import Head from "next/head";
-import authService from "@/utils/auth/authService";
-import { motion as m, AnimatePresence } from "framer-motion";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { useEffect, useState } from "react"
+import Head from "next/head"
+import authService from "@/utils/auth/authService"
+import { motion as m, AnimatePresence } from "framer-motion"
+import { AiFillCloseCircle } from "react-icons/ai"
 import {
   QuestionMarkCircleIcon,
   ChevronRightIcon,
-} from "@heroicons/react/24/outline";
+} from "@heroicons/react/24/outline"
 
 function Pantry() {
   useEffect(() => {
     if (authService.loggedIn() && !authService.tokenExpired()) {
-      return;
+      return
     } else {
-      window.location.assign("/login");
+      window.location.assign("/login")
     }
-  });
+  })
 
-  const [toggle, setToggle] = useState(true);
-  const [updateState, setUpdateState] = useState(false);
-  const [pantryItems, setPantryItems] = useState([]);
+  const [toggle, setToggle] = useState(true)
+  const [updateState, setUpdateState] = useState(false)
+  const [pantryItems, setPantryItems] = useState([])
 
   useEffect(() => {
     const getItems = async () => {
@@ -29,23 +29,23 @@ function Pantry() {
             "Content-Type": "application/json",
             Authorization: `${authService.getToken()}`,
           },
-        });
+        })
 
-        const data = await response.json();
-        setPantryItems(data);
+        const data = await response.json()
+        setPantryItems(data)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
-    };
+    }
 
-    getItems();
-  }, [toggle]);
+    getItems()
+  }, [toggle])
 
   // Add items to pantry
   const addToPantry = async (event) => {
-    event.preventDefault();
-    const ingredient = event.target[0].value;
-    const category = event.target[1].value;
+    event.preventDefault()
+    const ingredient = event.target[0].value
+    const category = event.target[1].value
     try {
       await fetch("/api/pantry", {
         method: "POST",
@@ -57,16 +57,16 @@ function Pantry() {
           ingredient: ingredient,
           category: category,
         }),
-      });
-      setToggle((prev) => !prev);
+      })
+      setToggle((prev) => !prev)
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
 
   // Delete items from pantry
   const handleDeleteItem = async (event) => {
-    const ingredient = event.target.parentElement.id.split(" ");
+    const ingredient = event.target.parentElement.id.split(" ")
     try {
       await fetch(
         `/api/pantry?ingredient=${ingredient[0]}&category=${ingredient[1]}`,
@@ -77,39 +77,40 @@ function Pantry() {
             Authorization: `${authService.getToken()}`,
           },
         }
-      );
+      )
 
-      setToggle((prev) => !prev);
+      setToggle((prev) => !prev)
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
 
   // Handle Next button
   const handleNextButton = () => {
-    window.location.assign("/kitchen");
-  };
+    window.location.assign("/kitchen")
+  }
 
   // Handle instructions dialog
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false)
   const handleDialogOpen = () => {
-    setDialogOpen(!dialogOpen);
-  };
+    setDialogOpen(!dialogOpen)
+  }
 
   const handleUpdateButton = () => {
-    setUpdateState((prev) => !prev);
-  };
+    setUpdateState((prev) => !prev)
+  }
 
   return (
     <>
       <Head>
         <title>Checking out the pantry...</title>
       </Head>
-      <div className='flex justify-center h-full pb-24'>
-        <div className='max-w-[1280px] w-full px-2 py-6'>
-          <div className='min-h-full px-4 py-8'>
+      <div className='flex justify-center h-full min-h-[70vh] pb-24 md:mx-4'>
+        <div className='max-w-[1280px] w-full px-2 md:px-0 py-4'>
+          <div className='min-h-full px-4 md:px-2  py-8'>
             <AnimatePresence>
               <m.div
+                key='container'
                 initial='hidden'
                 animate='visible'
                 viewport={{ once: true, amount: 0.8 }}>
@@ -148,7 +149,7 @@ function Pantry() {
                   </dialog>
                 </m.div>
               </m.div>
-              <div className='md:flex items-end'>
+              <div className='md:flex items-end' key='form'>
                 <form
                   className='sm:flex items-end'
                   id='pantry-form'
@@ -177,7 +178,7 @@ function Pantry() {
                         placeholder='Select category'
                         className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-teal-500 focus:border-teal-500 sm:max-w-xs sm:text-sm sm:leading-6'>
                         {categories.map((category) => {
-                          return <option key={category}>{category}</option>;
+                          return <option key={category}>{category}</option>
                         })}
                       </select>
                     </div>
@@ -187,32 +188,32 @@ function Pantry() {
                 <div className='grow mt-4 md:mt-0 md:ml-[20px] flex justify-between'>
                   <div>
                     <button
-                      className='text-white bg-teal-500 hover:bg-teal-600 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2'
+                      className='text-white bg-teal-500 hover:bg-teal-600 focus:ring-4 focus:outline-none focus:ring-teal-300 font-medium rounded-lg text-sm px-4 py-2 transition ease-out'
                       type='submit'
                       form='pantry-form'>
                       Add
                     </button>
                     <button
-                      className='ml-[10px] text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2'
+                      className='ml-[10px] text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2 transition ease-out'
                       onClick={handleUpdateButton}>
                       Update
                     </button>
                   </div>
                   <button
-                    className='font-semibold inline-flex items-center gap-1 text-gray-900'
+                    className='font-semibold inline-flex items-center gap-1 text-gray-900 hover:text-gray-500 transition ease-out'
                     onClick={handleNextButton}>
                     Next
                     <ChevronRightIcon className='w-5' />
                   </button>
                 </div>
               </div>
-              <div>
+              <div key='ingredients'>
                 <div className='mt-6 border-t border-gray-200'>
                   <dl className='divide-y divide-gray-200'>
-                    {categories.map((category) => {
+                    {categories.map((category, index) => {
                       return (
                         <div
-                          key={category}
+                          key={index}
                           className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
                           <dt className='text-sm font-medium leading-6 text-gray-900'>
                             {category}
@@ -222,7 +223,7 @@ function Pantry() {
                               {pantryItems &&
                                 pantryItems
                                   .filter((item) => item.category === category)
-                                  .map((item) => {
+                                  .map((item, index) => {
                                     return (
                                       <div
                                         className={`relative text-gray-900 border border-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 ${
@@ -244,7 +245,7 @@ function Pantry() {
                                             ? "bg-gray-100"
                                             : "bg-white"
                                         }`}
-                                        key={item.ingredient}
+                                        key={index}
                                         id={`${item.ingredient} ${
                                           category === categories[0]
                                             ? categories[0]
@@ -294,12 +295,12 @@ function Pantry() {
                                           onClick={handleDeleteItem}
                                         />
                                       </div>
-                                    );
+                                    )
                                   })}
                             </div>
                           </div>
                         </div>
-                      );
+                      )
                     })}
                   </dl>
                 </div>
@@ -309,10 +310,10 @@ function Pantry() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default Pantry;
+export default Pantry
 
 const categories = [
   "Protein",
@@ -324,7 +325,7 @@ const categories = [
   "Spice",
   "Seasoning",
   "Other",
-];
+]
 
 const cardVariantsVertical = {
   hidden: {
@@ -340,4 +341,4 @@ const cardVariantsVertical = {
       duration: 0.8,
     },
   },
-};
+}
